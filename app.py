@@ -79,7 +79,7 @@ class BatteryChargeThresholdApp(QWidget):
             elif e.returncode == 2:
                 QMessageBox.critical(self, "Error", "Invalid input: threshold must be between 20 and 100")
             elif e.returncode == 3:
-                QMessageBox.critical(self, "Error", "Error: charge_control_end_threshold file not found")
+                QMessageBox.critical(self, "Error", "Device not compatible \ncharge_control_end_threshold file not found")
             else:
                 QMessageBox.critical(self, "Error", str(e))
         except Exception as e:
