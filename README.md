@@ -10,7 +10,10 @@ git clone https://github.com/shitan198u/Battery_Charge_Stop_Threshold.git
 cd Battery_Charge_Stop_Threshold
 
 ```
-
+Setting the permissions
+```bash
+sudo chmod +x modify_threshold.sh
+```
 
 ## Installation
 
@@ -53,6 +56,11 @@ once inside the ./Battery_Charge_Stop_Threshold launch using:
 ```bash
 python3 app.py
 ```
+
+
+## References
+
+[Limit Battery Charging](https://www.linuxuprising.com/2021/02/how-to-limit-battery-charging-set.html)
 
 
 ## License
