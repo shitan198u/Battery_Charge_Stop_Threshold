@@ -62,7 +62,7 @@ class BatteryChargeThresholdApp(QWidget):
         try:
             # Get the present working directory
             current_directory = os.getcwd()
-            
+        
             # Construct the path to the shell script using the present working directory
             script_path = os.path.join(current_directory, "modify_threshold.sh")
 
@@ -73,13 +73,22 @@ class BatteryChargeThresholdApp(QWidget):
             # Execute the shell script with pkexec and pass the new threshold value as an argument
             subprocess.run(["pkexec", "bash", "-c", "{} {}".format(script_path, new_threshold)], check=True)
 
+        except subprocess.CalledProcessError as e:
+            if e.returncode == 1:
+                QMessageBox.critical(self, "Error", "Please run as root")
+            elif e.returncode == 2:
+                QMessageBox.critical(self, "Error", "Invalid input: threshold must be between 20 and 100")
+            elif e.returncode == 3:
+                QMessageBox.critical(self, "Error", "Error: charge_control_end_threshold file not found")
+            else:
+                QMessageBox.critical(self, "Error", str(e))
         except Exception as e:
             # Display an error message if something goes wrong
             QMessageBox.critical(self, "Error", str(e))
-        
+    
         else:
             # Display a success message with the new threshold value
-            QMessageBox.information(self, "Success", f"Battery charge threshold set to {new_threshold}%.")
+            QMessageBox.information(self, "Success", f"Battery charge threshold set to {new_threshold}%.\n\nChanges may take place after a reboot.")
 
 
 if __name__ == "__main__":

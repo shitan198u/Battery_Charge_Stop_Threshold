@@ -3,13 +3,13 @@
 # Check if the script is being run with root privileges
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"
-  exit
+  exit 1
 fi
 
 # Check if the input argument is within an acceptable range
 if [ "$1" -lt 20 ] || [ "$1" -gt 100 ]
   then echo "Invalid input: threshold must be between 20 and 100"
-  exit
+  exit 2
 fi
 
 # Get the name of the battery by running the ls command
@@ -18,7 +18,7 @@ battery_name=$(ls /sys/class/power_supply | grep '^BAT')
 # Check if the charge_control_end_threshold file exists
 if [ ! -f "/sys/class/power_supply/$battery_name/charge_control_end_threshold" ]; then
     echo "Error: charge_control_end_threshold file not found"
-    exit 1
+    exit 3
 fi
 
 # Check if the battery-charge-threshold.service file exists
