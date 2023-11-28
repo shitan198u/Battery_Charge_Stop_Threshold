@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Battery Threshold  
+Comment=Set battery charge threshold on Linux
+Exec=python3 /path/of/your/Battery_Charge_Stop_Threshold/app.py
+Icon=battery
+Categories=Utility;
+Terminal=false

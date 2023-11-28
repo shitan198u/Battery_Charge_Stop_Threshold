@@ -68,7 +68,7 @@ class BatteryChargeThresholdApp(QWidget):
 
             # Check if the shell script exists and is executable
             if not os.path.isfile(script_path) or not os.access(script_path, os.X_OK):
-                raise Exception("Shell script not found or not executable")
+                raise Exception("Shell script not found or script not executable")
 
             # Execute the shell script with pkexec and pass the new threshold value as an argument
             subprocess.run(["pkexec", "bash", "-c", "{} {}".format(script_path, new_threshold)], check=True)
