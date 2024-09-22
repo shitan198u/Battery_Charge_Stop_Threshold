@@ -2,41 +2,45 @@ import sys
 import os
 import subprocess
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QSpinBox, QPushButton, QVBoxLayout, QMessageBox
-from PyQt5.QtCore import Qt
-
+from PyQt5.QtCore import Qt, QEvent
 
 class BatteryChargeThresholdApp(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("Battery Charge Threshold")
-        self.setWindowFlag(Qt.WindowStaysOnTopHint)  # Set the window to stay on top
+        self.setWindowFlag(Qt.WindowStaysOnTopHint)
         self.setFixedSize(300, 150)
 
-        # Create the label
         self.label = QLabel("Set Battery Charge Threshold (%):")
 
-        # Create the spin box to set the threshold value
         self.spinBox = QSpinBox()
-        self.spinBox.setRange(20, 100)  # Set the range from 20 to 100
+        self.spinBox.setRange(20, 100)
 
-        # Get the current threshold value and set it as the default value of the spin box
         current_threshold = self.get_current_threshold()
         if current_threshold:
             self.spinBox.setValue(current_threshold)
         else:
-            self.spinBox.setValue(80)  # Default value of 80%
+            self.spinBox.setValue(80)
 
-        # Create the button to set the threshold
         self.button = QPushButton("Set Threshold")
         self.button.clicked.connect(self.set_threshold)
 
-        # Create the layout and add the widgets
         layout = QVBoxLayout()
         layout.addWidget(self.label)
         layout.addWidget(self.spinBox)
         layout.addWidget(self.button)
         self.setLayout(layout)
+
+        # Install event filter on spinBox to catch Enter key press
+        self.spinBox.installEventFilter(self)
+
+    def eventFilter(self, obj, event):
+        if obj == self.spinBox and event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Return or event.key() == Qt.Key_Enter:
+                self.set_threshold()
+                return True
+        return super().eventFilter(obj, event)
 
     def get_current_threshold(self):
         try:
